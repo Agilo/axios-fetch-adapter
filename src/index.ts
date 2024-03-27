@@ -114,8 +114,8 @@ function createRequest(config: AxiosRequestConfig): Request {
   }
 
   const method = config.method?.toUpperCase();
-  const options: Partial<Writeable<Request>> = {
-    headers: headers,
+  const options: RequestInit = {
+    headers,
     method,
   };
   if (method !== 'GET' && method !== 'HEAD') {
@@ -137,7 +137,10 @@ function createRequest(config: AxiosRequestConfig): Request {
   const url = buildURL(fullPath, config.params, config.paramsSerializer);
 
   // Expected browser to throw error if there is any wrong configuration value
-  return new Request(url, options);
+  return new Request(url, {
+    ...options,
+    ...config.fetchOptions,
+  });
 }
 
 export default fetchAdapter;
