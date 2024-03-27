@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
-import isAbsoluteURL from "./isAbsoluteURL";
-import combineURLs from "./combineURLs";
+import isAbsoluteURL from './isAbsoluteURL';
+import combineURLs from './combineURLs';
 
 /**
  * Creates a new URL by combining the baseURL with the requestedURL,
@@ -12,7 +12,10 @@ import combineURLs from "./combineURLs";
  * @param {string} requestedURL Absolute or relative URL to combine
  * @returns {string} The combined full path
  */
-export default function buildFullPath(baseURL: string, requestedURL: string) {
+export default function buildFullPath(
+  baseURL: string,
+  requestedURL: string,
+): string {
   if (baseURL && !isAbsoluteURL(requestedURL)) {
     return combineURLs(baseURL, requestedURL);
   }

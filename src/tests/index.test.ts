@@ -1,12 +1,12 @@
-import axios from "axios";
-import fetchAdapter from "../index";
+import axios from 'axios';
+import fetchAdapter from '../index';
 
-describe("fetchAdapter", () => {
-  it("should handle post request", async () => {
+describe('fetchAdapter', () => {
+  it('should handle post request', async () => {
     let response = await axios.request({
-      url: "https://httpbin.org/post",
-      method: "post",
-      data: { hello: "world" },
+      url: 'https://httpbin.org/post',
+      method: 'post',
+      data: { hello: 'world' },
       adapter: fetchAdapter,
     });
 

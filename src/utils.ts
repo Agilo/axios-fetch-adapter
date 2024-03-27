@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // utils is a library of generic helper functions non-specific to axios
 
@@ -37,7 +37,7 @@ function isArray(val) {
  * @returns {boolean} True if the value is undefined, otherwise false
  */
 function isUndefined(val) {
-  return typeof val === "undefined";
+  return typeof val === 'undefined';
 }
 
 /**
@@ -47,7 +47,7 @@ function isUndefined(val) {
  * @param {Object} val The value to test
  * @returns {boolean} True if value is an ArrayBuffer, otherwise false
  */
-var isArrayBuffer = kindOfTest("ArrayBuffer");
+var isArrayBuffer = kindOfTest('ArrayBuffer');
 
 /**
  * Determine if a value is an Object
@@ -56,7 +56,7 @@ var isArrayBuffer = kindOfTest("ArrayBuffer");
  * @returns {boolean} True if value is an Object, otherwise false
  */
 function isObject(val) {
-  return val !== null && typeof val === "object";
+  return val !== null && typeof val === 'object';
 }
 
 /**
@@ -66,7 +66,7 @@ function isObject(val) {
  * @param {Object} val The value to test
  * @returns {boolean} True if value is a Date, otherwise false
  */
-var isDate = kindOfTest("Date");
+var isDate = kindOfTest('Date');
 
 /**
  * Determine if a value is a Function
@@ -75,7 +75,7 @@ var isDate = kindOfTest("Date");
  * @returns {boolean} True if value is a Function, otherwise false
  */
 function isFunction(val) {
-  return toString.call(val) === "[object Function]";
+  return toString.call(val) === '[object Function]';
 }
 
 /**
@@ -85,10 +85,10 @@ function isFunction(val) {
  * @returns {boolean} True if value is an FormData, otherwise false
  */
 function isFormData(thing) {
-  var pattern = "[object FormData]";
+  var pattern = '[object FormData]';
   return (
     thing &&
-    ((typeof FormData === "function" && thing instanceof FormData) ||
+    ((typeof FormData === 'function' && thing instanceof FormData) ||
       toString.call(thing) === pattern ||
       (isFunction(thing.toString) && thing.toString() === pattern))
   );
@@ -100,7 +100,7 @@ function isFormData(thing) {
  * @param {Object} val The value to test
  * @returns {boolean} True if value is a URLSearchParams object, otherwise false
  */
-var isURLSearchParams = kindOfTest("URLSearchParams");
+var isURLSearchParams = kindOfTest('URLSearchParams');
 
 /**
  * Determine if we're running in a standard browser environment
@@ -119,14 +119,14 @@ var isURLSearchParams = kindOfTest("URLSearchParams");
  */
 function isStandardBrowserEnv() {
   if (
-    typeof navigator !== "undefined" &&
-    (navigator.product === "ReactNative" ||
-      navigator.product === "NativeScript" ||
-      navigator.product === "NS")
+    typeof navigator !== 'undefined' &&
+    (navigator.product === 'ReactNative' ||
+      navigator.product === 'NativeScript' ||
+      navigator.product === 'NS')
   ) {
     return false;
   }
-  return typeof window !== "undefined" && typeof document !== "undefined";
+  return typeof window !== 'undefined' && typeof document !== 'undefined';
 }
 
 /**
@@ -143,12 +143,12 @@ function isStandardBrowserEnv() {
  */
 function forEach(obj, fn) {
   // Don't bother if no value provided
-  if (obj === null || typeof obj === "undefined") {
+  if (obj === null || typeof obj === 'undefined') {
     return;
   }
 
   // Force an array if not already something iterable
-  if (typeof obj !== "object") {
+  if (typeof obj !== 'object') {
     /*eslint no-param-reassign:0*/
     obj = [obj];
   }

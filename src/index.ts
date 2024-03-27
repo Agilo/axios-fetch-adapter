@@ -4,11 +4,11 @@ import {
   AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
-} from "axios";
-import settle from "./helpers/settle";
-import buildURL from "./helpers/buildURL";
-import buildFullPath from "./helpers/buildFullPath";
-import { isUndefined, isStandardBrowserEnv, isFormData } from "./utils";
+} from 'axios';
+import settle from './helpers/settle';
+import buildURL from './helpers/buildURL';
+import buildFullPath from './helpers/buildFullPath';
+import { isUndefined, isStandardBrowserEnv, isFormData } from './utils';
 
 /**
  * - Create a request object
@@ -25,10 +25,10 @@ const fetchAdapter: AxiosAdapter = async (config) => {
         setTimeout(() => {
           const message = config.timeoutErrorMessage
             ? config.timeoutErrorMessage
-            : "timeout of " + config.timeout + "ms exceeded";
-          res(createError(message, config, "ECONNABORTED", request));
+            : 'timeout of ' + config.timeout + 'ms exceeded';
+          res(createError(message, config, 'ECONNABORTED', request));
         }, config.timeout);
-      })
+      }),
     );
   }
 
@@ -48,28 +48,28 @@ const fetchAdapter: AxiosAdapter = async (config) => {
  */
 async function getResponse(
   request: Request,
-  config: InternalAxiosRequestConfig
+  config: InternalAxiosRequestConfig,
 ): Promise<AxiosResponse | Error> {
   let stageOne: Response;
   try {
     stageOne = await fetch(request);
   } catch (e) {
-    return createError("Network Error", config, "ERR_NETWORK", request);
+    return createError('Network Error', config, 'ERR_NETWORK', request);
   }
 
   let data: any;
   if (stageOne.status >= 200 && stageOne.status !== 204) {
     switch (config.responseType) {
-      case "arraybuffer":
+      case 'arraybuffer':
         data = await stageOne.arrayBuffer();
         break;
-      case "blob":
+      case 'blob':
         data = await stageOne.blob();
         break;
-      case "json":
+      case 'json':
         data = await stageOne.json();
         break;
-      case "stream":
+      case 'stream':
         data = stageOne.body;
         break;
       default:
@@ -102,19 +102,19 @@ function createRequest(config: AxiosRequestConfig): Request {
           if (config.headers === undefined) throw Error();
           obj[key] = String(config.headers[key]);
           return obj;
-        }, {})
+        }, {}),
       )
     : new Headers({});
 
   // HTTP basic authentication
   if (config.auth) {
-    const username = config.auth.username || "";
+    const username = config.auth.username || '';
     const password = config.auth.password
       ? decodeURI(encodeURIComponent(config.auth.password))
-      : "";
+      : '';
     headers.set(
-      "Authorization",
-      `Basic ${Buffer.from(username + ":" + password).toString("base64")}`
+      'Authorization',
+      `Basic ${Buffer.from(username + ':' + password).toString('base64')}`,
     );
   }
 
@@ -123,19 +123,19 @@ function createRequest(config: AxiosRequestConfig): Request {
     headers: headers,
     method,
   };
-  if (method !== "GET" && method !== "HEAD") {
+  if (method !== 'GET' && method !== 'HEAD') {
     options.body = config.data;
 
     // In these cases the browser will automatically set the correct Content-Type,
     // but only if that header hasn't been set yet. So that's why we're deleting it.
     if (isFormData(options.body) && isStandardBrowserEnv()) {
-      headers.delete("Content-Type");
+      headers.delete('Content-Type');
     }
   }
   // This config is similar to XHR’s withCredentials flag, but with three available values instead of two.
   // So if withCredentials is not set, default value 'same-origin' will be used
   if (!isUndefined(config.withCredentials)) {
-    options.credentials = config.withCredentials ? "include" : "omit";
+    options.credentials = config.withCredentials ? 'include' : 'omit';
   }
 
   const fullPath = buildFullPath(config.baseURL, config.url);
@@ -167,9 +167,9 @@ function createError(
   config: InternalAxiosRequestConfig,
   code: string,
   request: Request,
-  response?: AxiosResponse
+  response?: AxiosResponse,
 ): Error {
-  if (AxiosError && typeof AxiosError === "function") {
+  if (AxiosError && typeof AxiosError === 'function') {
     return new AxiosError(message, AxiosError[code], config, request);
   }
 

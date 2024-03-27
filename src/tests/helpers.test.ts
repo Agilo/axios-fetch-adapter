@@ -1,45 +1,45 @@
-import bind from "../helpers/bind";
-import buildFullPath from "../helpers/buildFullPath";
-import combineURLs from "../helpers/combineURLs";
-import buildURL, { encode } from "../helpers/buildURL";
-import settle from "../helpers/settle";
-import isAbsoluteURL from "../helpers/isAbsoluteURL";
+import bind from '../helpers/bind';
+import buildFullPath from '../helpers/buildFullPath';
+import combineURLs from '../helpers/combineURLs';
+import buildURL, { encode } from '../helpers/buildURL';
+import settle from '../helpers/settle';
+import isAbsoluteURL from '../helpers/isAbsoluteURL';
 
-describe("bind", () => {
-  test("should bind function to thisArg", () => {
-    const thisArg = { value: "test" };
+describe('bind', () => {
+  test('should bind function to thisArg', () => {
+    const thisArg = { value: 'test' };
     const fn = function () {
       return this.value;
     };
     const bindFn = bind(fn, thisArg);
-    expect(bindFn()).toBe("test");
+    expect(bindFn()).toBe('test');
   });
 });
 
-describe("buildFullPath", () => {
-  test("should build full path when relative path starts with /", () => {
-    const baseURL = "https://api.github.com";
-    const relativePath = "/users";
+describe('buildFullPath', () => {
+  test('should build full path when relative path starts with /', () => {
+    const baseURL = 'https://api.github.com';
+    const relativePath = '/users';
     expect(buildFullPath(baseURL, relativePath)).toBe(
-      "https://api.github.com/users"
+      'https://api.github.com/users',
     );
   });
 
-  test("should build full path when relative path does not start with /", () => {
-    const baseURL = "https://api.github.com";
-    const relativePath = "users";
+  test('should build full path when relative path does not start with /', () => {
+    const baseURL = 'https://api.github.com';
+    const relativePath = 'users';
     expect(buildFullPath(baseURL, relativePath)).toBe(
-      "https://api.github.com/users"
+      'https://api.github.com/users',
     );
   });
 
-  test("should return baseURL when relative path is empty", () => {
-    const baseURL = "https://api.github.com";
-    const relativePath = "";
-    expect(buildFullPath(baseURL, relativePath)).toBe("https://api.github.com");
+  test('should return baseURL when relative path is empty', () => {
+    const baseURL = 'https://api.github.com';
+    const relativePath = '';
+    expect(buildFullPath(baseURL, relativePath)).toBe('https://api.github.com');
   });
 });
-/* 
+/*
 describe("buildURL", () => {
   test("should build URL when params are provided", () => {
     const baseURL = "https://api.github.com";
@@ -112,43 +112,43 @@ describe("buildURL", () => {
     );
   });
 }); */
-describe("buildURL", () => {
-  test("should return URL with no params when params are not provided", () => {
-    const baseURL = "https://api.github.com";
-    expect(buildURL(baseURL)).toBe("https://api.github.com");
+describe('buildURL', () => {
+  test('should return URL with no params when params are not provided', () => {
+    const baseURL = 'https://api.github.com';
+    expect(buildURL(baseURL)).toBe('https://api.github.com');
   });
 
-  test("should return URL with params when params are provided", () => {
-    const baseURL = "https://api.github.com";
+  test('should return URL with params when params are provided', () => {
+    const baseURL = 'https://api.github.com';
     const params = { id: 123 };
-    expect(buildURL(baseURL, params)).toBe("https://api.github.com?id=123");
+    expect(buildURL(baseURL, params)).toBe('https://api.github.com?id=123');
   });
 
-  test("should return URL with serialized params when paramsSerializer is provided", () => {
-    const baseURL = "https://api.github.com";
+  test('should return URL with serialized params when paramsSerializer is provided', () => {
+    const baseURL = 'https://api.github.com';
     const params = { id: 123 };
     const paramsSerializer = (params) =>
       Object.entries(params)
         .map(([key, value]) => `${key}=${value}`)
-        .join("&");
+        .join('&');
     expect(buildURL(baseURL, params, paramsSerializer)).toBe(
-      "https://api.github.com?id=123"
+      'https://api.github.com?id=123',
     );
   });
 
-  test("should return URL without hash when URL contains hash", () => {
-    const baseURL = "https://api.github.com#hash";
+  test('should return URL without hash when URL contains hash', () => {
+    const baseURL = 'https://api.github.com#hash';
     const params = { id: 123 };
-    expect(buildURL(baseURL, params)).toBe("https://api.github.com?id=123");
+    expect(buildURL(baseURL, params)).toBe('https://api.github.com?id=123');
   });
 });
 
-describe("settle", () => {
-  test("should resolve promise when request is successful", async () => {
+describe('settle', () => {
+  test('should resolve promise when request is successful', async () => {
     const mockResolve = jest.fn();
     const mockReject = jest.fn();
     const mockResponse = {
-      data: "data",
+      data: 'data',
       status: 200,
       config: { validateStatus: () => true },
     };
@@ -159,11 +159,11 @@ describe("settle", () => {
     expect(mockReject).not.toHaveBeenCalled();
   });
 
-  test("should reject promise when request fails", async () => {
+  test('should reject promise when request fails', async () => {
     const mockResolve = jest.fn();
     const mockReject = jest.fn();
     const mockResponse = {
-      data: "error",
+      data: 'error',
       status: 500,
       config: { validateStatus: () => false },
     };
@@ -175,32 +175,32 @@ describe("settle", () => {
   });
 });
 
-describe("isAbsoluteURL", () => {
-  test("should return true when URL is absolute", () => {
-    const url = "http://www.google.com";
+describe('isAbsoluteURL', () => {
+  test('should return true when URL is absolute', () => {
+    const url = 'http://www.google.com';
     expect(isAbsoluteURL(url)).toBe(true);
   });
 
-  test("should return false when URL is relative", () => {
-    const url = "/path/to/resource";
+  test('should return false when URL is relative', () => {
+    const url = '/path/to/resource';
     expect(isAbsoluteURL(url)).toBe(false);
   });
 });
 
-describe("combineURLs", () => {
-  test("should combine URL and relative path correctly", () => {
-    const baseURL = "http://www.google.com";
-    const relativePath = "/path/to/resource";
+describe('combineURLs', () => {
+  test('should combine URL and relative path correctly', () => {
+    const baseURL = 'http://www.google.com';
+    const relativePath = '/path/to/resource';
     expect(combineURLs(baseURL, relativePath)).toBe(
-      "http://www.google.com/path/to/resource"
+      'http://www.google.com/path/to/resource',
     );
   });
 });
 
-describe("encode", () => {
-  test("should correctly encode a string", () => {
-    const str = "Hello World!";
+describe('encode', () => {
+  test('should correctly encode a string', () => {
+    const str = 'Hello World!';
     const encodedStr = encode(str);
-    expect(encodedStr).toBe("Hello+World!");
+    expect(encodedStr).toBe('Hello+World!');
   });
 });
