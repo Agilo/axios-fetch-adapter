@@ -1,6 +1,6 @@
 {
   "name": "@agilo/axios-fetch-adapter",
-  "version": "0.2.0-0",
+  "version": "0.1.0-0",
   "description": "Fetch Adapter for axios",
   "main": "./lib/index.js",
   "repository": {
@@ -10,7 +10,8 @@
   "author": "Ante Primorac <ante@agilo.co>",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "npm run build"
   },
   "peerDependencies": {
     "axios": "^0.24.0"
