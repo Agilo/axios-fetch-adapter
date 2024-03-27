@@ -3,12 +3,6 @@
   "version": "0.0.0",
   "description": "Fetch Adapter for axios",
   "main": "./lib/index.js",
-  "files": [
-    "lib",
-    "LICENSE",
-    "package.json",
-    "README.md"
-  ],
   "repository": {
     "type": "git",
     "url": "git@github.com:agilo/axios-fetch-adapter.git"
