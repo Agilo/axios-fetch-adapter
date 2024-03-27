@@ -1,6 +1,7 @@
 'use strict';
 
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import { createError } from './createError';
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -18,12 +19,10 @@ export default function settle<Response extends AxiosResponse>(
     resolve(response);
   } else {
     reject(
-      new AxiosError(
+      createError(
         'Request failed with status code ' + response.status,
-        [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][
-          Math.floor(response.status / 100) - 4
-        ],
         response.config,
+        response.status.toString(),
         response.request,
         response,
       ),

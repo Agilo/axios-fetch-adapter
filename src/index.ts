@@ -1,14 +1,9 @@
-import {
-  AxiosAdapter,
-  AxiosError,
-  AxiosRequestConfig,
-  AxiosResponse,
-  InternalAxiosRequestConfig,
-} from 'axios';
+import { AxiosAdapter, AxiosRequestConfig, AxiosResponse } from 'axios';
 import settle from './helpers/settle';
 import buildURL from './helpers/buildURL';
 import buildFullPath from './helpers/buildFullPath';
 import { isUndefined, isStandardBrowserEnv, isFormData } from './utils';
+import { createError } from './helpers/createError';
 
 /**
  * - Create a request object
@@ -43,12 +38,12 @@ const fetchAdapter: AxiosAdapter = async (config) => {
 };
 
 /**
- * Fetch API stage two is to get response body. This funtion tries to retrieve
+ * Fetch API stage two is to get response body. This function tries to retrieve
  * response body based on response's type
  */
 async function getResponse(
   request: Request,
-  config: InternalAxiosRequestConfig,
+  config: AxiosRequestConfig,
 ): Promise<AxiosResponse | Error> {
   let stageOne: Response;
   try {
@@ -143,87 +138,6 @@ function createRequest(config: AxiosRequestConfig): Request {
 
   // Expected browser to throw error if there is any wrong configuration value
   return new Request(url, options);
-}
-
-/**
- * Note:
- *
- *   From version >= 0.27.0, createError function is replaced by AxiosError class.
- *   So I copy the old createError function here for backward compatible.
- *
- *
- *
- * Create an Error with the specified message, config, error code, request and response.
- *
- * @param {string} message The error message.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The created error.
- */
-function createError(
-  message: string,
-  config: InternalAxiosRequestConfig,
-  code: string,
-  request: Request,
-  response?: AxiosResponse,
-): Error {
-  if (AxiosError && typeof AxiosError === 'function') {
-    return new AxiosError(message, AxiosError[code], config, request);
-  }
-
-  var error = new Error(message);
-  return enhanceError(error, config, code, request, response);
-}
-
-/**
- *
- * Note:
- *
- *   This function is for backward compatible.
- *
- *
- * Update an Error with the specified config, error code, and response.
- *
- * @param {Error} error The error to update.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The error.
- */
-function enhanceError(error, config, code, request, response) {
-  error.config = config;
-  if (code) {
-    error.code = code;
-  }
-
-  error.request = request;
-  error.response = response;
-  error.isAxiosError = true;
-
-  error.toJSON = function toJSON() {
-    return {
-      // Standard
-      message: this.message,
-      name: this.name,
-      // Microsoft
-      description: this.description,
-      number: this.number,
-      // Mozilla
-      fileName: this.fileName,
-      lineNumber: this.lineNumber,
-      columnNumber: this.columnNumber,
-      stack: this.stack,
-      // Axios
-      config: this.config,
-      code: this.code,
-      status:
-        this.response && this.response.status ? this.response.status : null,
-    };
-  };
-  return error;
 }
 
 export default fetchAdapter;
