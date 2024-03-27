@@ -1,6 +1,6 @@
 {
   "name": "@agilo/axios-fetch-adapter",
-  "version": "0.2.0-0",
+  "version": "0.3.0-0",
   "description": "Fetch Adapter for axios",
   "main": "./lib/index.js",
   "repository": {
